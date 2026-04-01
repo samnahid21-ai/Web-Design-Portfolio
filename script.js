@@ -1,33 +1,61 @@
-// script.js
+// Enhanced features for script.js
 
-// Smooth Scrolling
-const scrollLinks = document.querySelectorAll('a.scroll');
+// Scroll to Top Button
+const scrollToTopBtn = document.createElement('button');
+scrollToTopBtn.textContent = '↑';
+scrollToTopBtn.style.position = 'fixed';
+scrollToTopBtn.style.bottom = '20px';
+scrollToTopBtn.style.right = '20px';
+scrollToTopBtn.style.display = 'none';
 
-scrollLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+document.body.appendChild(scrollToTopBtn);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        scrollToTopBtn.style.display = 'block';
+    } else {
+        scrollToTopBtn.style.display = 'none';
+    }
+});
+
+scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
+// Intersection Observer for Animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        } else {
+            entry.target.classList.remove('animate');
+        }
     });
 });
 
-// Project Card Hover Effects
-const projectCards = document.querySelectorAll('.project-card');
+const animatedElements = document.querySelectorAll('.animate-on-scroll');
+animatedElements.forEach(el => observer.observe(el));
 
-projectCards.forEach(card => {
-    card.addEventListener('mouseover', () => {
-        card.classList.add('hover');
-    });
-    card.addEventListener('mouseout', () => {
-        card.classList.remove('hover');
+// Performance Optimizations
+const lazyLoadImages = document.querySelectorAll('img[data-src]');
+const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.onload = () => {
+                img.classList.add('loaded');
+            };
+            observer.unobserve(img);
+        }
     });
 });
 
-// Navigation Functionality
-const navMenu = document.querySelector('.nav-menu');
-const navToggle = document.querySelector('.nav-toggle');
+lazyLoadImages.forEach(img => imageObserver.observe(img));
 
-navToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
-});

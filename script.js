@@ -1,6 +1,33 @@
 // Enhanced features for script.js
 
 // Scroll to Top Button
+const throttle = (func, limit) => {
+    let lastFunc;
+    let lastRan;
+    return function() {
+        const context = this;
+        const args = arguments;
+        if (!lastRan) {
+            func.apply(context, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function() {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(context, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+
+            if (Date.now() - lastRan >= limit) {
+                clearTimeout(lastFunc);
+                func.apply(context, args);
+                lastRan = Date.now();
+            }
+        }
+    };
+};
+
 const scrollToTopBtn = document.createElement('button');
 scrollToTopBtn.textContent = '↑';
 scrollToTopBtn.style.position = 'fixed';
@@ -10,13 +37,13 @@ scrollToTopBtn.style.display = 'none';
 
 document.body.appendChild(scrollToTopBtn);
 
-window.addEventListener('scroll', () => {
+window.addEventListener('scroll', throttle(() => {
     if (window.scrollY > 300) {
         scrollToTopBtn.style.display = 'block';
     } else {
         scrollToTopBtn.style.display = 'none';
     }
-});
+}, 100));
 
 scrollToTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

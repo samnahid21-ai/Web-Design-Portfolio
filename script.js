@@ -3,6 +3,7 @@
 // Scroll to Top Button
 const scrollToTopBtn = document.createElement('button');
 scrollToTopBtn.textContent = '↑';
+scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
 scrollToTopBtn.style.position = 'fixed';
 scrollToTopBtn.style.bottom = '20px';
 scrollToTopBtn.style.right = '20px';

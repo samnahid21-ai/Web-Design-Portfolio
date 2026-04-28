@@ -1,0 +1,3 @@
+## 2024-05-18 - Dynamic ARIA States for JavaScript-Injected Elements
+**Learning:** When injecting interactive elements via JavaScript (like a "Scroll to top" icon button) or toggling states (like Dark Mode), it is easy to forget accessibility attributes because the elements aren't in the static HTML. Screen readers need `aria-label` for icon-only buttons and `aria-pressed` for toggle buttons to understand their purpose and current state.
+**Action:** Always verify that dynamically created interactive elements include appropriate ARIA attributes (e.g., `aria-label`, `title`) and that toggle buttons dynamically update their `aria-pressed` or `aria-expanded` attributes during interaction.

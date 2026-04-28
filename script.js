@@ -3,10 +3,13 @@
 // Scroll to Top Button
 const scrollToTopBtn = document.createElement('button');
 scrollToTopBtn.textContent = '↑';
+scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
+scrollToTopBtn.setAttribute('title', 'Scroll to top');
 scrollToTopBtn.style.position = 'fixed';
 scrollToTopBtn.style.bottom = '20px';
 scrollToTopBtn.style.right = '20px';
 scrollToTopBtn.style.display = 'none';
+scrollToTopBtn.style.cursor = 'pointer';
 
 document.body.appendChild(scrollToTopBtn);
 
@@ -24,9 +27,14 @@ scrollToTopBtn.addEventListener('click', () => {
 
 // Dark Mode Toggle
 const darkModeToggle = document.getElementById('dark-mode-toggle');
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
+// Set initial state
+if (darkModeToggle) {
+    darkModeToggle.setAttribute('aria-pressed', document.body.classList.contains('dark-mode') ? 'true' : 'false');
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        darkModeToggle.setAttribute('aria-pressed', document.body.classList.contains('dark-mode') ? 'true' : 'false');
+    });
+}
 
 // Intersection Observer for Animations
 const observer = new IntersectionObserver((entries) => {
